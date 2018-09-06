@@ -18,39 +18,61 @@ namespace Extract
         {
             ConfigOps.ReadConfig();
             Console.WriteLine("Iniciando Procedimiento de Extracción...");
-            List<ExtractedData> result1 = TSQL.Extract(FileType.Empresa001);
+            Logger.WriteLog("\n\r" + DateTime.Now + "\n\rIniciando Procedimiento de Extracción...");
 
-            if (result1.Count > 0)
+            try
             {
-                TSQL.UpdateSelectedRegs(FileType.Empresa001);
-                string path = Writer.CreateFile(result1, FileType.Empresa001);
-                Console.WriteLine("Comenzando escritura de datos");
-                foreach (var item in result1)
+                List<ExtractedData> result1 = TSQL.Extract(FileType.Empresa001);
+                if (result1.Count > 0)
                 {
-                    Writer.WriteFile(item, path);
+                    TSQL.UpdateSelectedRegs(FileType.Empresa001);
+                    string path = Writer.CreateFile(result1, FileType.Empresa001);
+                    Console.WriteLine("Comenzando escritura de datos");
+                    Logger.WriteLog("Comenzando escritura de datos");
+                    foreach (var item in result1)
+                    {
+                        Writer.WriteFile(item, path);
+                    }
+                    Console.WriteLine("Escritura de datos finalizada");
+                    Logger.WriteLog("Escritura de datos finalizada");
                 }
-                Console.WriteLine("Escritura de datos finalizada");
-            }
-            else Console.WriteLine("No hay datos de empresa 1 a escribir...");
-
-            List<ExtractedData> result2 = TSQL.Extract(FileType.Empresa004);
-            if (result2.Count > 0)
-            {
-                TSQL.UpdateSelectedRegs(FileType.Empresa004);
-                string path = Writer.CreateFile(result2, FileType.Empresa004);
-                Console.WriteLine("Comenzando escritura de datos");
-                foreach (var item in result2)
+                else
                 {
-                    Writer.WriteFile(item, path);
+                    Console.WriteLine("No hay datos de empresa 1 a escribir...");
+                    Logger.WriteLog("No hay datos de empresa 1 a escribir...");
                 }
-                Console.WriteLine("Escritura de datos finalizada");
-            }
-            else Console.WriteLine("No hay datos de empresa 2 a escribir...");
 
-            if (result1.Count > 0 || result2.Count > 0)
-            {
-                ConfigOps.UpdateConfig();
+                List<ExtractedData> result2 = TSQL.Extract(FileType.Empresa004);
+                if (result2.Count > 0)
+                {
+                    TSQL.UpdateSelectedRegs(FileType.Empresa004);
+                    string path = Writer.CreateFile(result2, FileType.Empresa004);
+                    Console.WriteLine("Comenzando escritura de datos");
+                    Logger.WriteLog("Comenzando escritura de datos");
+
+                    foreach (var item in result2)
+                    {
+                        Writer.WriteFile(item, path);
+                    }
+                    Console.WriteLine("Escritura de datos finalizada");
+                    Logger.WriteLog("Escritura de datos finalizada");
+                }
+                else
+                {
+                    Console.WriteLine("No hay datos de empresa 4 a escribir...");
+                    Logger.WriteLog("No hay datos de empresa 4 a escribir...");
+                } 
+
+                if (result1.Count > 0 || result2.Count > 0)
+                {
+                    ConfigOps.UpdateConfig();
+                }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error de ejecución: " + ex.Message);
+            }
+            
         }
     }
 }

@@ -23,6 +23,7 @@ namespace Extract.Controller
             catch (Exception ex)
             {
                 Console.WriteLine("Error al actualizar App.Config: " + ex.Message);
+                Logger.WriteLog("Error al actualizar App.Config: " + ex.Message);
             }
             
         }

@@ -25,21 +25,31 @@ namespace Extract.Controller
         private static bool ValConn()
         {
             Console.WriteLine("Iniciando prueba de conexión a la BD.\n");
+            Logger.WriteLog("Iniciando prueba de conexión a la BD.\n");
             SqlConnection conn = CreateConnection();
             bool flag = false;
             try
             {
                 Console.WriteLine("Probando conexión...");
+                Logger.WriteLog("Probando conexión...");
                 conn.Open();
                 Console.WriteLine("Conexión exitosa!!!");
+                Logger.WriteLog("Conexión exitosa!!!");
                 flag = true;
                 conn.Close();
                 Console.WriteLine("Cerrando conexión...");
+                Logger.WriteLog("Cerrando conexión...");
             }
             catch (SqlException ex)
-            { Console.WriteLine("Error SQL: " + ex.Message + "\n" + ex.StackTrace);}
+            {
+                Console.WriteLine("Error SQL: " + ex.Message + "\n" + ex.StackTrace);
+                Logger.WriteLog("Error SQL: " + ex.Message + "\n" + ex.StackTrace);
+            }
             catch (Exception ex)
-            { Console.WriteLine("Error: " + ex.Message + "\n" + ex.StackTrace);}
+            {
+                Console.WriteLine("Error: " + ex.Message + "\n" + ex.StackTrace);
+                Logger.WriteLog("Error: " + ex.Message + "\n" + ex.StackTrace);
+            }
             return flag;
         }
         
@@ -53,6 +63,7 @@ namespace Extract.Controller
                 try
                 {
                     Console.WriteLine("Extrayendo datos...");
+                    Logger.WriteLog("Extrayendo datos...");
 
                     if (op == FileType.Empresa001)
                     {
@@ -67,16 +78,22 @@ namespace Extract.Controller
                     {
                         SqlCommand cmd = new SqlCommand("select a.referencia1, d.customfield14, b.cliente, d.customfield22, a.serie+a.folio, c.fechaTimbrado, " +
                         "d.customfield08, d.customfield09 from cfdicomprobante as a, CFDIReceptor as b, CFDiTimbre as c, CFDICustomFields as d " +
-                        "where a.empresaId = '0000000002' and a.referencia4 <> 1 and a.empresaId = b.empresaId and a.empresaId = c.empresaId " +
+                        "where a.empresaId = '0000000004' and a.referencia4 <> 1 and a.empresaId = b.empresaId and a.empresaId = c.empresaId " +
                         "and a.empresaId = d.empresaId and a.noDocumento = b.noDocumento and a.noDocumento = c.noDocumento and " +
                         "a.noDocumento = d.noDocumento", CreateConnection());
                         data = ExecuteSQL(cmd);
                     }  
                 }
                 catch (SqlException ex)
-                { Console.WriteLine("Error SQL: " + ex.Message + "\n" + ex.StackTrace);}
+                {
+                    Console.WriteLine("Error SQL: " + ex.Message + "\n" + ex.StackTrace);
+                    Logger.WriteLog("Error SQL: " + ex.Message + "\n" + ex.StackTrace);
+                }
                 catch (Exception ex)
-                { Console.WriteLine("Error: " + ex.Message + "\n" + ex.StackTrace);}
+                {
+                    Console.WriteLine("Error: " + ex.Message + "\n" + ex.StackTrace);
+                    Logger.WriteLog("Error: " + ex.Message + "\n" + ex.StackTrace);
+                }
             }
             else data = null;
             return data;
@@ -136,55 +153,23 @@ namespace Extract.Controller
 
         private static void ExecuteUpdate(SqlCommand cmd)
         {
-            cmd.Connection.Open();
-            cmd.CommandType = CommandType.Text;
-            cmd.ExecuteNonQuery();
-            cmd.Connection.Close();
-        }
-        /*public static List<ExtractedData> Extract2()
-        {
-            SqlDataReader reader;
-            List<ExtractedData> data = new List<ExtractedData>();
-            bool flag = ValConn();
-
-            if (flag)
+            try
             {
-                try
-                {
-                    Console.WriteLine("Extrayendo datos...");
-                    SqlCommand cmd = new SqlCommand("select a.referencia1, b.cliente, a.serie+a.folio, " +
-                        "c.fechaTimbrado, d.customfield08, d.customfield09 from cfdicomprobante as a, " +
-                        "CFDIReceptor as b, CFDiTimbre as c, CFDICustomFields as d where a.empresaId = '0000000002' and a.referencia4 <> 1 " +
-                        "and a.empresaId = b.empresaId and a.empresaId = c.empresaId and a.empresaId = d.empresaId and a.noDocumento = b.noDocumento " +
-                        "and a.noDocumento = c.noDocumento and a.noDocumento = d.noDocumento", CreateConnection());
-                    cmd.Connection.Open();
-                    cmd.CommandType = CommandType.Text;
-                    reader = cmd.ExecuteReader();
-
-                    if (reader.HasRows)
-                    {
-                        while (reader.Read())
-                        {
-                            data.Add(new ExtractedData
-                            {
-                                VIN = (string)reader[0],
-                                Customer = (string)reader[1],
-                                Folio = (string)reader[2],
-                                BillingDate = (DateTime)reader[3],
-                                Pedimento = (string)reader[4],
-                                PedimentoDate = (string)reader[5]
-                            });
-                        }
-                    }
-                    cmd.Connection.Close();
-                }
-                catch (SqlException ex)
-                { Console.WriteLine("Error SQL: " + ex.Message + "\n" + ex.StackTrace);}
-                catch (Exception ex)
-                { Console.WriteLine("Error: " + ex.Message + "\n" + ex.StackTrace);}
+                cmd.Connection.Open();
+                cmd.CommandType = CommandType.Text;
+                cmd.ExecuteNonQuery();
+                cmd.Connection.Close();
             }
-            else data = null;
-            return data;
-        }*/
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Error SQL: " + ex.Message + "\n" + ex.StackTrace);
+                Logger.WriteLog("Error SQL: " + ex.Message + "\n" + ex.StackTrace);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message + "\n" + ex.StackTrace);
+                Logger.WriteLog("Error: " + ex.Message + "\n" + ex.StackTrace);
+            }
+        }
     }
 }

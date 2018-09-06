@@ -56,7 +56,7 @@ namespace Extract.Controller
                 StreamWriter sw = File.AppendText(path);
                 sw.WriteLine(item.VIN + "|" + item.Engine + "||" + item.Customer.Remove(0,3) + "|" + item.Colour + "|8185|" + item.Folio + "|" + 
                     item.BillingDate.ToShortDateString() + "|" + item.Pedimento.Remove(0,34) + "|" + 
-                    TreatDate(item.PedimentoDate.Remove(0, 3)) + "||\n");
+                    TreatDate(item.PedimentoDate.Remove(0, 3)) + "||");
                 sw.Close();
             }
             catch (Exception ex)
