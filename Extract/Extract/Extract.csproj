@@ -50,6 +50,7 @@
       <DependentUpon>AppConfig.settings</DependentUpon>
     </Compile>
     <Compile Include="Controller\ConfigOps.cs" />
+    <Compile Include="Controller\Logger.cs" />
     <Compile Include="Controller\TSQL.cs" />
     <Compile Include="Controller\Writer.cs" />
     <Compile Include="Init.cs" />

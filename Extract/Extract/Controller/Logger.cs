@@ -11,7 +11,7 @@ namespace Extract.Controller
     {
         public static void WriteLog(string strn)
         {
-            string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Log_" + DateTime.Now.ToString("dd_MM_yyyy") + ".txt";
+            string path = ConfigOps.config.logPath + "\\Log_" + DateTime.Now.ToString("dd_MM_yyyy") + ".txt";
             StreamWriter sw;
 
             if (!File.Exists(path))

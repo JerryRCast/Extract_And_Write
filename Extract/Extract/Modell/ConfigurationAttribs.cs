@@ -15,7 +15,9 @@ namespace Extract.Modell
             public string database { get; set; }
             public string userName { get; set; }
             public string password { get; set; }
-            public string consecutive { get; set; }
+            public string logPath { get; set; }
+            public string filePath { get; set; }
+            public string status { get; set; }
         }
     }
 }

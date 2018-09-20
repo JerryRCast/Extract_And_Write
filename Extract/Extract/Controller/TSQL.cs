@@ -71,7 +71,7 @@ namespace Extract.Controller
                         "d.customfield08, d.customfield09 from cfdicomprobante as a, CFDIReceptor as b, CFDiTimbre as c, CFDICustomFields as d " +
                         "where a.empresaId = '0000000001' and a.referencia4 <> 1 and a.empresaId = b.empresaId and a.empresaId = c.empresaId " +
                         "and a.empresaId = d.empresaId and a.noDocumento = b.noDocumento and a.noDocumento = c.noDocumento and " +
-                        "a.noDocumento = d.noDocumento", CreateConnection());
+                        "a.noDocumento = d.noDocumento and facturaStatus in(" + ConfigOps.config.status + ")", CreateConnection());
                         data = ExecuteSQL(cmd);
                     }
                     else
@@ -80,7 +80,7 @@ namespace Extract.Controller
                         "d.customfield08, d.customfield09 from cfdicomprobante as a, CFDIReceptor as b, CFDiTimbre as c, CFDICustomFields as d " +
                         "where a.empresaId = '0000000004' and a.referencia4 <> 1 and a.empresaId = b.empresaId and a.empresaId = c.empresaId " +
                         "and a.empresaId = d.empresaId and a.noDocumento = b.noDocumento and a.noDocumento = c.noDocumento and " +
-                        "a.noDocumento = d.noDocumento", CreateConnection());
+                        "a.noDocumento = d.noDocumento and facturaStatus in(" + ConfigOps.config.status + ");", CreateConnection());
                         data = ExecuteSQL(cmd);
                     }  
                 }
@@ -127,7 +127,7 @@ namespace Extract.Controller
             }
             else data.DefaultIfEmpty(new ExtractedData()
             {
-                ControlError = "Empty"
+                ControlError = "Empty" // El contenido del objeto puede omitirse
             });
             cmd.Connection.Close();
             return data;
@@ -139,14 +139,14 @@ namespace Extract.Controller
             {
                 SqlCommand cmd = new SqlCommand("update cfdicomprobante set referencia4 = '1' " +
                         "where referencia1 in(select distinct referencia1 from cfdicomprobante where empresaId like '0000000001' " +
-                        "and referencia4 <> 1);", CreateConnection());
+                        "and referencia4 <> 1) and facturaStatus in(" + ConfigOps.config.status + ");", CreateConnection());
                 ExecuteUpdate(cmd);
             }
             else
             {
                 SqlCommand cmd = new SqlCommand("update cfdicomprobante set referencia4 = '1' " +
-                       "where referencia1 in(select distinct referencia1 from cfdicomprobante where empresaId like '0000000002' " +
-                       "and referencia4 <> 1);", CreateConnection());
+                       "where referencia1 in(select distinct referencia1 from cfdicomprobante where empresaId like '0000000004' " +
+                       "and referencia4 <> 1) and facturaStatus in(" + ConfigOps.config.status + ");", CreateConnection());
                 ExecuteUpdate(cmd);
             }
         }
