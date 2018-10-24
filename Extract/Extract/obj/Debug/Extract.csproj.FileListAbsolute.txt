@@ -3,3 +3,8 @@ C:\Users\gerardo.rios\Documents\Visual Studio 2015\Projects\Extract\Extract\bin\
 C:\Users\gerardo.rios\Documents\Visual Studio 2015\Projects\Extract\Extract\bin\Debug\Extract.pdb
 C:\Users\gerardo.rios\Documents\Visual Studio 2015\Projects\Extract\Extract\obj\Debug\Extract.exe
 C:\Users\gerardo.rios\Documents\Visual Studio 2015\Projects\Extract\Extract\obj\Debug\Extract.pdb
+C:\Users\gerardo.rios\Documents\Privado\Jerry\GitHub\Extract_And_Write\Extract\Extract\bin\Debug\Extract.exe.config
+C:\Users\gerardo.rios\Documents\Privado\Jerry\GitHub\Extract_And_Write\Extract\Extract\obj\Debug\Extract.exe
+C:\Users\gerardo.rios\Documents\Privado\Jerry\GitHub\Extract_And_Write\Extract\Extract\obj\Debug\Extract.pdb
+C:\Users\gerardo.rios\Documents\Privado\Jerry\GitHub\Extract_And_Write\Extract\Extract\bin\Debug\Extract.exe
+C:\Users\gerardo.rios\Documents\Privado\Jerry\GitHub\Extract_And_Write\Extract\Extract\bin\Debug\Extract.pdb

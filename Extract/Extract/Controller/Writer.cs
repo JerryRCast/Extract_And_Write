@@ -12,7 +12,9 @@ namespace Extract.Controller
 {
     class Writer
     {
-        private static long modNum = 0; 
+        public static int count = 0;
+        private static long modNum = 0;
+         
         private static void MakeFile(string path, string date, string hour, int regs)
         {
             modNum = modNum % 499;
@@ -32,20 +34,19 @@ namespace Extract.Controller
             int regs = data.Count;
             string date = DateTime.Now.ToString("dd/MM/yyyy");
             string hour = DateTime.Now.TimeOfDay.ToString().Remove(8);
+            string halfName = date.Replace("/", "") + "_" + hour.Replace(":", "");
 
             switch (op)
             {
                 case FileType.Empresa001:
-                    path = ConfigOps.config.filePath + "\\" +
-                        date.Replace("/", "") + "_" + hour.Replace(":", "") + "_REPORTE_REPUVE_VEH.txt";
+                    Logger.WriteLog(DateTime.Now + "\n\rCreando archivo: " + halfName + "_REPORTE_REPUVE_VEH.txt");
+                    path = ConfigOps.config.filePath + "\\" + halfName + "_REPORTE_REPUVE_VEH.txt";
                     MakeFile(path, date, hour, regs);
                     break;
                 case FileType.Empresa004:
-                    path = ConfigOps.config.filePath + "\\" +
-                        date.Replace("/", "") + "_" + hour.Replace(":", "") + "_REPORTE_REPUVE_VAN.txt";
+                    Logger.WriteLog(DateTime.Now + "\n\rCreando archivo: " + halfName + "_REPORTE_REPUVE_VAN.txt");
+                    path = ConfigOps.config.filePath + "\\" + halfName + "_REPORTE_REPUVE_VAN.txt";
                     MakeFile(path, date, hour, regs);
-                    break;
-                default:
                     break;
             }
             return path;  
@@ -53,16 +54,20 @@ namespace Extract.Controller
 
         public static void WriteFile(ExtractedData item, string path)
         {
+            StreamWriter sw = File.AppendText(path);
             try
             {
-                StreamWriter sw = File.AppendText(path);
+                
                 sw.WriteLine(item.VIN + "|" + item.Engine + "||" + item.Customer.Remove(0,3) + "|" + item.Colour + "|8185|" + item.Folio + "|" + 
                     item.BillingDate.ToShortDateString() + "|" + item.Pedimento.Remove(0,34) + "|" +
                     item.PedimentoDate + "||");
                 sw.Close();
+                count += 1;
             }
             catch (Exception ex)
             {
+                sw.Close();
+                Logger.WriteLog("Error: " + ex.Message + "\nPila de llamadas: " + ex.StackTrace);
                 Console.WriteLine("Error: " + ex.Message + "\nPila de llamadas: " + ex.StackTrace);
             }
         }
